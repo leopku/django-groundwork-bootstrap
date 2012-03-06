@@ -149,14 +149,12 @@ TEMPLATES_CREATE = """
 
 {%% block heading %%}<h1>  %(modelClass)s - Create </h1>  {%% endblock %%}
 {%% block content %%} 
-<table>
-<form action="" method="POST"> {%% csrf_token %%}
-  {{form}}
-  <tr>
-    <td colspan="2" align="right"><input type="submit" value="Create"/></td>
-  </tr>
+<div class="span6 offset3">
+<form action="" method="POST" class="well form-horizontal"> {% csrf_token %}
+    <p>{{form}}</p>
+    <p><button class="btn btn-primary" type="Create">Submit</button></p>
 </form>
-</table>
+</div>
 {%% endblock %%}
 """
 
@@ -171,29 +169,33 @@ TEMPLATES_LIST = """
 {%% endblock %%}
 {%% block content %%} 
 
-<table>
+<table class="table table-bordered table-striped">
 <thead>
-<tr><th>Record</th><th colspan="3">Actions</th></tr>
-{%% for item in list_items.object_list %%}
-  <tr><td>  {{item}}</td> <td><a href="{%% url %(app)s.views.view_%(model)s item.id %%}">Show</a> </td> <td><a href="{%% url %(app)s.views.edit_%(model)s item.id %%}">Edit</a></tr>
-{%% endfor %%}
-<tr><td colspan="3"> <a href="{%% url %(app)s.views.create_%(model)s %%}">Add New</a></td></tr>
+    <tr><th class="span3">Record</th><th colspan="3">Actions</th></tr>
+</thead>
+<tbody>
+    {% for item in list_items.object_list %}
+      <tr><td>  {{item}}</td> <td><a class="btn btn-info" href="{% url topic.views.view_post item.id %}">Show</a> &nbsp;&nbsp; <a class="btn btn-info" href="{% url topic.views.edit_post item.id %}">Edit</a></tr>
+    {% endfor %}
+    <tr><td colspan="2"> <a class="btn" href="{% url topic.views.create_post %}">Add New</a></td></tr>
+</tbody>
 </table>
 
 <div align="center">
-{%% if list_items.has_previous %%}
+{% if list_items.has_previous %}
     <a href="?page={{ list_items.previous_page_number }}">Previous</a>
-{%% endif %%}
+{% endif %}
 
 <span class="current">
     Page {{ list_items.number }} of {{ list_items.paginator.num_pages }}.
 </span>
 
-{%% if list_items.has_next %%}
+{% if list_items.has_next %}
         <a href="?page={{ list_items.next_page_number }}">Next</a>
-{%% endif %%}
+{% endif %}
 
 </div>
+
 {%% endblock %%}
 """
 
@@ -205,14 +207,12 @@ TEMPLATES_EDIT = """
 
 {%% block heading %%} <h1> %(modelClass)s</h1><h2> Edit </h2> {%% endblock %%}
 {%% block content %%} 
-<table>
-<form action="" method="POST"> {%% csrf_token %%}
-  {{form}}
-  <tr>
-    <td colspan="2" align="right"><input type="submit" value="Save"/></td>
-  </tr>
+<div class="span6 offset3">
+<form action="" method="POST" class="well form-horizontal"> {%% csrf_token %%}
+  <p>{{form}}</p>
+  <p><input type="submit" value="Save" class="btn btn-primary"/></p>
 </form>
-</table>
+</div>
 {%% endblock %%}
 """
 
@@ -223,9 +223,9 @@ TEMPLATES_VIEW = """
 
 {%% block heading %%} <h1> %(modelClass)s</h1><h2>View</h2>  {%% endblock %%}
 {%% block content %%} 
-<table>
+<div class="span6 offset3">
 {{ %(model)s_instance }}
-</table>
+</div>
 {%% endblock %%}
 """
 
@@ -241,43 +241,48 @@ TEMPLATES_BASE = """
     <title>
         {% block title %} {% endblock %}
     </title>
-      <style type="text/css"> 
-        html * { padding:0; margin:0; }
-        body * { padding:10px 20px; }
-        body * * { padding:0; }
-        body { font:small sans-serif; }
-        body>div { border-bottom:1px solid #ddd; }
-        h1 { font-weight:normal; }
-        h2 { margin-bottom:.8em; }
-        h2 span { font-size:80% ; color:#666; font-weight:normal; }
-        h3 { margin:1em 0 .5em 0; }
-        h4 { margin:0 0 .5em 0; font-weight: normal; }
-        td {font-size:1em;  padding:3px 17px 2px 17px;}
-        ul { margin-left: 2em; margin-top: 1em; }
-        #summary { background: #e0ebff; }
-        #summary h2 { font-weight: normal; color: #666; }
-        #explanation { background:#eee; }
-        #content { background:#f6f6f6; }
-        #summary table { border:none; background:transparent; }
-      </style> 
+    <!-- Strongly recommended to download bootstrap.css into your local server or CDN networks. -->
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
 
+<div class="container">
 
-<div id="summary">
-{% block heading %}  
-{% endblock %}
-</div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</a>
+				<a href="#" class="brand">Project name</a>
+				<div class="nav-collapse">
+				<ul class="nav">
+				  <li class="active"><a href="#">Home</a></li>
+				  <li><a href="#about">About</a></li>
+				  <li><a href="#contact">Contact</a></li>
+				</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
 
-<div id="content">
-{% block content %} 
+	<div class="hero-unit">
+	{% block heading %}  
+	{% endblock %}
+	</div>
+
+	<div class="row">
+	{% block content %} 
 
 
-{% endblock %}
-</div>
-
-<div id="explanation" align="center">
-django-groundwork
+	{% endblock %}
+	</div>
+	<hr>
+	<footer>
+	<center>django-groundwork</center>
+	</footer>
 </div>
 
 </body>

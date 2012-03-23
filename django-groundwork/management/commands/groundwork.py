@@ -103,6 +103,7 @@ class Command(BaseCommand):
             f.write( "\nimport os\nTEMPLATE_DIRS += (os.path.join(  os.path.dirname(__file__), 'templates') ,)\n")
             f.close()
                 
-        except:
+        except Exception, e:
+            print 'THere is an error while working. ', str(e)
             print "Usage : manage.py groundwork <app> <model>"
 

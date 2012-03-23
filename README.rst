@@ -1,3 +1,13 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bootstrap UI style hack notice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Best practise of Bootstrap style version of django-groundwork is downloading
+the Bootstrap project from http://twitter.github.com/bootstrap/ and put the css
+files into your local server or CDN networks.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Django-groundwork
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This app does all the groundwork needed to get an app up and running..
 Usage:
 

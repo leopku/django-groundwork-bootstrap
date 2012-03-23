@@ -149,11 +149,13 @@ TEMPLATES_CREATE = """
 
 {%% block heading %%}<h1>  %(modelClass)s - Create </h1>  {%% endblock %%}
 {%% block content %%} 
+<div class="row">
 <div class="span6 offset3">
-<form action="" method="POST" class="well form-horizontal"> {% csrf_token %}
+<form action="" method="POST" class="well form-horizontal"> {%% csrf_token %%}
     <p>{{form}}</p>
     <p><button class="btn btn-primary" type="Create">Submit</button></p>
 </form>
+</div>
 </div>
 {%% endblock %%}
 """
@@ -174,25 +176,25 @@ TEMPLATES_LIST = """
     <tr><th class="span3">Record</th><th colspan="3">Actions</th></tr>
 </thead>
 <tbody>
-    {% for item in list_items.object_list %}
-      <tr><td>  {{item}}</td> <td><a class="btn btn-info" href="{% url topic.views.view_post item.id %}">Show</a> &nbsp;&nbsp; <a class="btn btn-info" href="{% url topic.views.edit_post item.id %}">Edit</a></tr>
-    {% endfor %}
-    <tr><td colspan="2"> <a class="btn" href="{% url topic.views.create_post %}">Add New</a></td></tr>
+    {%% for item in list_items.object_list %%}
+      <tr><td>  {{item}}</td> <td><a class="btn btn-info" href="{%% url %(app)s.views.view_%(model)s item.id %%}">Show</a> &nbsp;&nbsp; <a class="btn btn-info" href="{%% url %(app)s.views.edit_%(model)s item.id %%}">Edit</a></tr>
+    {%% endfor %%}
+    <tr><td colspan="2"> <a class="btn" href="{%% url %(app)s.views.create_%(model)s %%}">Add New</a></td></tr>
 </tbody>
 </table>
 
 <div align="center">
-{% if list_items.has_previous %}
+{%% if list_items.has_previous %%}
     <a href="?page={{ list_items.previous_page_number }}">Previous</a>
-{% endif %}
+{%% endif %%}
 
 <span class="current">
     Page {{ list_items.number }} of {{ list_items.paginator.num_pages }}.
 </span>
 
-{% if list_items.has_next %}
+{%% if list_items.has_next %%}
         <a href="?page={{ list_items.next_page_number }}">Next</a>
-{% endif %}
+{%% endif %%}
 
 </div>
 
@@ -207,12 +209,14 @@ TEMPLATES_EDIT = """
 
 {%% block heading %%} <h1> %(modelClass)s</h1><h2> Edit </h2> {%% endblock %%}
 {%% block content %%} 
+
 <div class="span6 offset3">
 <form action="" method="POST" class="well form-horizontal"> {%% csrf_token %%}
   <p>{{form}}</p>
   <p><input type="submit" value="Save" class="btn btn-primary"/></p>
 </form>
 </div>
+
 {%% endblock %%}
 """
 
@@ -223,9 +227,11 @@ TEMPLATES_VIEW = """
 
 {%% block heading %%} <h1> %(modelClass)s</h1><h2>View</h2>  {%% endblock %%}
 {%% block content %%} 
+
 <div class="span6 offset3">
 {{ %(model)s_instance }}
 </div>
+
 {%% endblock %%}
 """
 
@@ -239,7 +245,7 @@ TEMPLATES_BASE = """
 	<meta name="keywords" content="" />
 	<meta name="author" content="" />
     <title>
-        {% block title %} {% endblock %}
+        {%% block title %%} {%% endblock %%}
     </title>
     <!-- Strongly recommended to download bootstrap.css into your local server or CDN networks. -->
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" />
@@ -268,17 +274,13 @@ TEMPLATES_BASE = """
 		</div>
 	</div>
 
-	<div class="hero-unit">
-	{% block heading %}  
-	{% endblock %}
-	</div>
+	{%% block heading %%}  
+    <!--<div class="hero-unit">
+    </div>-->
+	{%% endblock %%}
 
-	<div class="row">
-	{% block content %} 
-
-
-	{% endblock %}
-	</div>
+	{%% block content %%} 
+	{%% endblock %%}
 	<hr>
 	<footer>
 	<center>django-groundwork</center>
